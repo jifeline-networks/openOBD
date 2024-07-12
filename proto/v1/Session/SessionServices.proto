@@ -5,9 +5,12 @@ option java_multiple_files = true;
 
 import "v1/Session/Messages/ServiceResult.proto";
 import "v1/Session/Messages/BusConfiguration.proto";
+import "v1/Session/Messages/Session.proto";
 import "v1/Messages/Empty.proto";
 
 service session {
+  rpc authenticate(EmptyMessage) returns (SessionToken) {}
+  rpc openSessionTokenStream(EmptyMessage) returns (stream SessionToken) {}
   rpc configureBus(BusConfiguration) returns (EmptyMessage) {}
   rpc configureBuses(stream BusConfiguration) returns (EmptyMessage) {}
   rpc finish(ServiceResult) returns (EmptyMessage) {}

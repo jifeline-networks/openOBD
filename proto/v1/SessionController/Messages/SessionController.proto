@@ -36,7 +36,7 @@ message Authenticate {
 Message used for encasing the openOBD session token. It is required to be sent for every service call via the metadata as an indication of
 the client's current session. Can be retrieved by using [sessionController](grpc.md#sessioncontroller) service.
  */
-message SessionToken {
+message SessionControllerToken {
   string value = 1;
 }
 

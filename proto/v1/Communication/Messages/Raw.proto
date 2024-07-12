@@ -20,5 +20,4 @@ message RawChannel {
   string bus_name               = 1;  // Used indicate over which bus the channel should be registered on.
   optional uint32 request_id    = 3;  // Request CAN identifier over which payload messages are sent.
   optional uint32 response_id   = 4;  // Response CAN identifier over which messages are received.
-
 }
