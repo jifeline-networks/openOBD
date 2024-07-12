@@ -1,0 +1,7 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Messages";
+option java_multiple_files = true;
+
+// Empty message, used for requests/responses that do not send/receive any arguments.
+message EmptyMessage {}

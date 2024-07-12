@@ -1,0 +1,31 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.SessionController";
+option java_multiple_files = true;
+
+import "v1/SessionController/Messages/Session.proto";
+import "v1/Messages/Empty.proto";
+
+/*
+The sessionController can be used to start an openOBD session.
+``` mermaid
+sequenceDiagram
+    Client->>Server: getSessionToken
+    Server->>Client: SessionToken
+    Client->>Server: startSessionOnTicket
+    Server->>Client: SessionInfo
+    Note over Client,Server: openOBD session<br/>
+```
+ */
+service sessionController {
+  rpc getSessionToken(Authenticate) returns (SessionToken) {}
+  rpc startSessionOnTicket(TicketId) returns (SessionInfo) {}
+  rpc startSessionOnConnector(ConnectorId) returns (SessionInfo) {}
+  rpc getSession(SessionId) returns (SessionInfo) {}
+  rpc deleteSession(SessionId) returns (SessionInfo) {}
+  rpc getSessionList(EmptyMessage) returns (SessionInfoList) {}
+}
+
+
+
+

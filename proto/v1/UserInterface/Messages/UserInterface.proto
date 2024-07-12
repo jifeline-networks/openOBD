@@ -1,0 +1,62 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.UserInterface.Messages";
+option java_multiple_files = true;
+
+// Message defining the UI to be displayed.
+message Control {
+  InterfaceType target                  = 1;  // Specifies where the UI message should be shown.
+  oneof ControlType {
+    Label control_label                 = 2;
+    Options control_options             = 3;
+    Continue control_continue           = 4;
+    YesNo control_yesno                 = 5;
+    FreeText control_freetext           = 6;
+    Numbers control_number              = 8;
+  }
+}
+
+// Indicates the recipient of the UI.
+enum InterfaceType {
+  INTERFACE_UNDEFINED  = 0;
+  INTERFACE_USER       = 1;   // User interface that is presented in the client application.
+  INTERFACE_OPERATOR   = 2;   // User interface that is presented in the partner dashboard.
+}
+
+// Shows a text message with no user interaction. The response will be returned the moment the UI is displayed.
+message Label {
+  string label                          = 1;  // Text message that should be shown.
+  optional uint32 minimal_display_time  = 2;  // Time (in seconds) to display the UI before a response is returned. Default = 0.
+}
+
+// Shows each given string as a button.
+message Options {
+  string label            = 1;  // Text message that should be shown.
+  repeated string options = 2;  // For each given string, a button will be shown containing the string.
+  optional uint32 answer  = 3;  // Index of the selected option.
+}
+
+// Shows a text message with a `Continue` button.
+message Continue {
+  string label = 1; // Text message that should be shown.
+}
+
+// Shows a `Yes` and `No` button under the label.
+message YesNo {
+  string label            = 1;  // Text message that should be shown.
+  optional bool answer    = 2;  // Indicates whether 'Yes' (`True`) or 'No' (`False`) was selected.
+}
+
+// Shows a text field and a `Send` button. The `Send` button can only be pressed after text has been entered.
+message FreeText {
+  string label            = 1;  // Text message that should be shown.
+  optional string answer  = 2;  // The entered text.
+}
+
+// Shows each number in the specified range as a button, in ascending order.
+message Numbers {
+  string label            = 1;  // Text message that should be shown.
+  uint32 minimum          = 2;  // The lowest number to show (inclusive).
+  uint32 maximum          = 4;  // The highest number to show (inclusive).
+  optional uint32 answer  = 3;  // The selected number.
+}

@@ -1,0 +1,32 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Session.Messages";
+option java_multiple_files = true;
+
+message ServiceResult {                                 // Indicates the result of the diagnostic service being carried out via the current gRPC session.
+    repeated Result result                      = 1;    // The result of the service being carried out. There should ALWAYS be a value present.
+    optional UserFeedback user_feedback         = 2;
+    optional string description                 = 3;    // A custom description indicating the reason for success or failure.
+}
+
+enum Result {                                           // This value is used to indicate the result of the diagnostic procedure being carried out via the gRPC service.
+    RESULT_UNDEFINED                            = 0;    // No result defined.
+    RESULT_SUCCESS                              = 1;    // The procedure is successfully carried out.
+    RESULT_INVALID_PRECONDITIONS                = 2;    // Certain conditions to perform the procedure are not correct. E.g., the ignition is not on.
+    RESULT_NEEDS_VALIDATION                     = 3;    // The procedure carried out needs to be manually validated.
+    RESULT_NEEDS_COMPLETION                     = 4;    // The procedure is incomplete.
+    RESULT_FAILURE_AUTHENTICATION_ERROR         = 5;    // The procedure cannot be completed due to missing or invalid security authentication.
+    RESULT_FAILURE_MISSING_CODING_INFORMATION   = 6;    // The procedure cannot be completed due to missing information.
+    RESULT_FAILURE_NOT_COMPATIBLE               = 7;    // The procedure is not compatible with the current vehicle.
+    RESULT_FAILURE_COMMUNICATION_ERROR          = 8;    // There is a communication error during the procedure. E.g., there is no communication with modules.
+    RESULT_FAILURE_RUNTIME_ERROR                = 9;    // The procedure encountered some unexpected errors. E.g., syntax or logical errors.
+    RESULT_FAILURE_EXTERNAL_SERVICE_ERROR       = 10;   // The procedure cannot be completed due to unavailability of external APIs that it depends on.
+    RESULT_FAILURE                              = 11;   // Applies when none of the other failure results apply.
+}
+
+enum UserFeedback {                                     // Value to indicate feedback received from the user via the user interface.
+    USER_FEEDBACK_NOTHING = 0;                          // There is nothing to declare.
+    USER_FEEDBACK_SUCCESS = 1;                          // The user declares the procedure was successful.
+    USER_FEEDBACK_FAILURE = 3;                          // The user declares the procedure was not successful.
+    USER_FEEDBACK_ASSISTANCE_REQUESTED = 4;             // The user requests assistance.
+}

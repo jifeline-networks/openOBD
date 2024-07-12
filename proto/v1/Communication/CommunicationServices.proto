@@ -1,0 +1,12 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Communication";
+option java_multiple_files = true;
+
+import "v1/Communication/Messages/Isotp.proto";
+import "v1/Communication/Messages/Raw.proto";
+
+service can {
+  rpc openIsotpStream(stream IsotpMessage) returns (stream IsotpMessage) {}
+  rpc openRawStream(stream RawFrame) returns (stream RawFrame) {}
+}

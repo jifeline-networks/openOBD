@@ -1,0 +1,51 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.SessionController.Messages";
+option java_multiple_files = true;
+
+// Holds the ticket number or ticket identifier. This message is required to start an openOBD session.
+message TicketId {
+  string value = 1; // Can be the ticket number (e.g. 7848095) or UUID (e.g. e67b35ae-cbff-4213-a935-73f79bdd15be).
+}
+
+// Holds the connector number required to start an openOBD session.
+message ConnectorId {
+  string value = 1; // The connector number.
+}
+
+// Holds info on an openOBD session. Can be retrieved by using the [sessionController](grpc.md#sessioncontroller) service.
+message SessionInfo {
+  string id = 1;  // A UUID representing this session.
+  string status = 2;  // The current [state](protocol.md#session-states) of the session. Possible values: `available`, `active`, `interrupted`, `finished`, and `failed`.
+  string created_at = 3;  // The creation timestamp according to ISO 8601 (e.g. 2024-04-16:13:36.651+0000).
+  string grpc_endpoint = 4;   // The endpoint to which gRPC messages need to be sent.
+  string authentication_token = 5;  // The single-use token which is used to authenticate this openOBD session.
+}
+// TODO: we need to be sure how the user is gonna use the grpc_endpoint and authentication_token so we can clearly describe them in that context
+
+// Used to authenticate to the Partner API.
+message Authenticate {
+  string client_id = 1;
+  string client_secret = 2;
+  string api_key = 3;
+  string cluster_id = 4;
+}
+// TODO: link to the page where authentication is explained
+
+/*
+Message used for encasing the openOBD session token. It is required to be sent for every service call via the metadata as an indication of
+the client's current session. Can be retrieved by using [sessionController](grpc.md#sessioncontroller) service.
+ */
+message SessionToken {
+  string value = 1;
+}
+
+// Holds a list of openOBD sessions.
+message SessionInfoList {
+  repeated SessionInfo sessions = 1;  // The list of openOBD session objects.
+}
+
+// Message for the openOBD session identifier.
+message SessionId {
+  string value = 1;
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Communication.Messages";
+option java_multiple_files = true;
+
+message IsotpMessage {
+  IsotpChannel channel            = 1;
+  string payload                  = 2;
+}
+
+message IsotpChannel {
+  string bus_name                             = 1;
+  uint32 request_id                           = 2;
+  uint32 response_id                          = 3;
+  optional uint32 extended_request_address    = 4;
+  optional uint32 extended_response_address   = 5;
+  optional Padding padding                    = 6;
+}
+
+enum Padding {
+  PADDING_UNDEFINED             = 0;
+  PADDING_ENABLED               = 1;
+  PADDING_DETECTION             = 2;
+  PADDING_DISABLED              = 3;
+  PADDING_SET_FROM_ECU          = 4;
+  PADDING_SET_TOWARDS_ECU       = 5;
+}

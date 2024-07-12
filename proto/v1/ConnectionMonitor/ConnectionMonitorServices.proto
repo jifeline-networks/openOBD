@@ -1,0 +1,27 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.ConnectionMonitor";
+option java_multiple_files = true;
+
+import "v1/ConnectionMonitor/Messages/ConnectorInformation.proto";
+import "v1/Messages/Empty.proto";
+
+/*
+These services are used to monitor the status of the connection and the connector in the session
+when diagnostic procedures are being carried out. It is to be used as reference data when problems
+arise during procedures due to faults in the internet connection, e.g. high latency or when the connector
+is offline.
+*/
+service connectionMonitor {
+  /*
+  This service retrieves a single value, i.e., information about the connector at the requested time. This gives an idea of
+  what the connector status is at the requested moment.
+   */
+  rpc getConnectorInformation(EmptyMessage) returns (ConnectorInformation) {}
+  /*
+  This service retrieves a stream of values; multiple values about connector information. This allows the user to
+  monitor the status of the connection and the connector during the diagnostic procedure and helps to find connection faults
+  when a procedure may fail.
+   */
+  rpc openConnectorInformationStream(EmptyMessage) returns (stream ConnectorInformation) {}
+}

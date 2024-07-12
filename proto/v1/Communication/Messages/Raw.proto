@@ -1,0 +1,24 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Communication.Messages";
+option java_multiple_files = true;
+
+/*
+ Message containing non formatted CAN frame. The fields payload and can_request_id are optional for this message because this message can
+ also be used in situations where no frames are desired to be sent. In this situation the user desires only to listen to the frames
+ being transmitted on the subscribed CAN identifiers
+ */
+message RawFrame {
+  RawChannel channel             = 1; // The ecu channel over which frames are sent and received.
+  optional string payload        = 2; // The message payload of 8 bytes.
+}
+
+/*
+Message containing the channel to subscribe to. Note: there must be at least one identifier supplied per channel definition (either request_id or response_id).
+ */
+message RawChannel {
+  string bus_name               = 1;  // Used indicate over which bus the channel should be registered on.
+  optional uint32 request_id    = 3;  // Request CAN identifier over which payload messages are sent.
+  optional uint32 response_id   = 4;  // Response CAN identifier over which messages are received.
+
+}

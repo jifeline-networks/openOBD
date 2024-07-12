@@ -1,0 +1,39 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.ConnectionMonitor.Messages";
+option java_multiple_files = true;
+
+// Ping is universally understood by all, therefore the choice to use it
+// instead of RoundTripTime
+
+/*
+This message envelops information about the connector, whether it is connected or not, since when it is connected,
+what is the current latency in the connection, and lastly an indicative variable `healthy` which gives an idea of whether the
+connection is healthy or not.
+ */
+message ConnectorInformation {
+  /*
+  Whether the connector is connected.
+   */
+  bool connected = 1;
+  /*
+  UTC timestamp in milliseconds indicating since when the connector has been connected.
+   */
+  uint64 connected_since = 2;
+  /*
+  Latency in the internet connection in milliseconds. Note: a change is noticed in the latency only if there is a change
+  greater than 50 milliseconds and it is updated every second.
+   */
+  uint32 latency = 3;
+  /*
+   Indicative variable.
+   If your application requires LOW latency, do NOT use the `healthy` flag.
+   The `healthy` flag indicates whether a connection is stable based on the
+   last 10 latency samples and an average latency below 500 ms. This variable is calculated
+   by taking the weighted average of latency values higher than the average latency
+   (error rate), then converted into a percentage and checked if it is
+   less than 75%. If it is less than 75%, then the connection is considered to be healthy.
+   Otherwise, it is not.
+  */
+  bool healthy = 4;
+}
