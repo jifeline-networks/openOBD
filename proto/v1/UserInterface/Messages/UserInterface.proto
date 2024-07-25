@@ -19,8 +19,8 @@ message Control {
 // Indicates the recipient of the UI.
 enum InterfaceType {
   INTERFACE_UNDEFINED  = 0;
-  INTERFACE_USER       = 1;   // User interface that is presented in the client application.
-  INTERFACE_OPERATOR   = 2;   // User interface that is presented in the partner dashboard.
+  INTERFACE_USER       = 1;   // User interface that is presented in the client application to the customer.
+  INTERFACE_OPERATOR   = 2;   // User interface that is presented in the partner dashboard to the operator.
 }
 
 // Shows a text message with no user interaction. The response will be returned the moment the UI is displayed.

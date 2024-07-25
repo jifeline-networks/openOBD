@@ -22,7 +22,7 @@ service sessionController {
   rpc startSessionOnTicket(TicketId) returns (SessionInfo) {}
   rpc startSessionOnConnector(ConnectorId) returns (SessionInfo) {}
   rpc getSession(SessionId) returns (SessionInfo) {}
-  rpc deleteSession(SessionId) returns (SessionInfo) {}
+  rpc interruptSession(SessionId) returns (SessionInfo) {}
   rpc getSessionList(EmptyMessage) returns (SessionInfoList) {}
 }
 

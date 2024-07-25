@@ -3,5 +3,9 @@ package openOBD.v1;
 option java_package = "com.jifeline.OpenOBD.Messages";
 option java_multiple_files = true;
 
+/*
+ These are common definitions that are used at several openOBD functions.
+ */
+
 // Empty message, used for requests/responses that do not send/receive any arguments.
 message EmptyMessage {}
