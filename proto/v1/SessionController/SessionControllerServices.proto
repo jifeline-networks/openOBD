@@ -18,11 +18,39 @@ sequenceDiagram
 ```
  */
 service sessionController {
+  /*
+  This service is used to authenticate with the SessionController service as the client.
+  This is to ensure that the person using openOBD has the required credentials. The credentials that are required to
+  sent can be seen in Authenticate. It returns a SessionControllerToken to be received by the client.
+   */
   rpc getSessionControllerToken(Authenticate) returns (SessionControllerToken) {}
+  /*
+  This service is used to start an openOBD session on a ticket. This is the primary method of starting a session. The
+  information required to start a session using this method is the ticket number found on the Jifeline Partner Dashboard
+  as TicketId. For a successful call a new session is created and SessionInfo message containing all relevant
+  information is returned.
+   */
   rpc startSessionOnTicket(TicketId) returns (SessionInfo) {}
+  /*
+  This service is used to start an openOBD session on a connector (J-ReX). This method to start a
+  session is used for developmental purposes only. The ConnectorId is required to start a successful session.
+  The SessionInfo message is returned.
+   */
   rpc startSessionOnConnector(ConnectorId) returns (SessionInfo) {}
+  /*
+  This service is used to retrieve a single openOBD session. The session is retrieved using the SessionId and
+  irrespective of the session state. It returns the SessionInfo message.
+   */
   rpc getSession(SessionId) returns (SessionInfo) {}
+  /*
+  This service to used to stop/interrupt an `active` or `available` openOBD session. It returns the interrupted
+  session as a SessionInfo message.
+   */
   rpc interruptSession(SessionId) returns (SessionInfo) {}
+  /*
+  This service is used to retrieve a list all openOBD sessions started by the client irrespective of their state.
+  It returns a list of SessionInfo messages as a SessionInfoList message.
+   */
   rpc getSessionList(EmptyMessage) returns (SessionInfoList) {}
 }
 

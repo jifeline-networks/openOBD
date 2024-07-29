@@ -5,8 +5,18 @@ option java_multiple_files = true;
 
 import "v1/Communication/Messages/Isotp.proto";
 import "v1/Communication/Messages/Raw.proto";
+import "v1/Messages/Empty.proto";
 
 service can {
+  /*
+  The `openIsotpStream` rpc service opens a bidirectional stream of *IsotpMessage* messages. It is used in ISOTP communication where
+  the client can rely for the ISOTP frame handling on the openOBD stack. It only needs to bother about the payload (e.g. UDS) that is being sent and received.
+   */
   rpc openIsotpStream(stream IsotpMessage) returns (stream IsotpMessage) {}
+  /*
+  The `openRawStream` rpc service opens a bidirectional stream of *RawFrame* messages. These messages can be used to send and receive raw CAN frames.
+  This gives more control over the actual data that is being sent and received on the CAN bus. On the other hand, the client code needs to implement more handling since multiframes etc. are not handled by the openOBD stack.
+  */
   rpc openRawStream(stream RawFrame) returns (stream RawFrame) {}
 }
+

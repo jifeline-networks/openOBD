@@ -6,7 +6,9 @@ option java_multiple_files = true;
 import "v1/UserInterface/Messages/UserInterface.proto";
 
 service userInterface {
-  // Displays each given UI message, replacing any previously shown UI for the selected target.
+  /*
+   Displays each given UI message, replacing any previously shown UI for the selected target.
+   */
   rpc openControlStream(stream Control) returns (stream Control) {}
 }
 

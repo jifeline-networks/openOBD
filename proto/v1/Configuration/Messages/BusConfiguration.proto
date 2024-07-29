@@ -1,6 +1,6 @@
 syntax = "proto3";
 package openOBD.v1;
-option java_package = "com.jifeline.OpenOBD.Session.Messages";
+option java_package = "com.jifeline.OpenOBD.Configuration.Messages";
 option java_multiple_files = true;
 
 message BusConfiguration {

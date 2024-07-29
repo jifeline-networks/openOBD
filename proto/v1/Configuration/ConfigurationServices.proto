@@ -1,0 +1,15 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Configuration";
+option java_multiple_files = true;
+
+import "v1/Configuration/Messages/BusConfiguration.proto";
+import "v1/Messages/Empty.proto";
+
+service config {
+  /*
+  The `configureBus` rpc service opens an outgoing stream where `BusConfiguration` messages can be send. Depending on the hardware version
+  up to four busses may be configured at a time.
+  */
+  rpc configureBus(stream BusConfiguration) returns (EmptyMessage) {}
+}

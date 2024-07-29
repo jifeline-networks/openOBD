@@ -4,15 +4,27 @@ option java_package = "com.jifeline.OpenOBD.Session";
 option java_multiple_files = true;
 
 import "v1/Session/Messages/ServiceResult.proto";
-import "v1/Session/Messages/BusConfiguration.proto";
 import "v1/Session/Messages/Session.proto";
 import "v1/Messages/Empty.proto";
 
 service session {
+  /*
+  The `authenticate()` rpc call is used to "claim" an openOBD session. Once an openOBD session is created and attached to
+  a running connection on the Jifeline network it is in an 'available' state. The only allowed and also required call to continue with
+  this session is this `authenticate()` call. It needs an initial bearer token that is present in the `SessionInfo` message.
+  <br/>
+  Once this call has been made, any subsequent calls need to be made using a new bearer token that is contained in the `SessionToken` response.
+  It is advised to first set up a SessionToken stream using the `openSessionTokenStream()` rpc call.
+   */
   rpc authenticate(EmptyMessage) returns (SessionToken) {}
+  /*
+  The `openSessionTokenStream()` rpc call is used to open a continuous stream of `SessionToken` messages. When a new `SessionToken` is received on this stream
+  the subsequent calls that are being made on an openOBD session need to incorporate the freshly received token as their bearer token in the header of their gRPC calls.
+   */
   rpc openSessionTokenStream(EmptyMessage) returns (stream SessionToken) {}
-  rpc configureBus(BusConfiguration) returns (EmptyMessage) {}
-  rpc configureBuses(stream BusConfiguration) returns (EmptyMessage) {}
+  /*
+  The `finish(ServiceResult)` rpc call is used to gracefully finish an openOBD session. The `ServiceResult` argument message indicates whether the service was executed successfully.
+   */
   rpc finish(ServiceResult) returns (EmptyMessage) {}
 }
 
