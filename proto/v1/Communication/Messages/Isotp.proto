@@ -3,20 +3,55 @@ package openOBD.v1;
 option java_package = "com.jifeline.OpenOBD.Communication.Messages";
 option java_multiple_files = true;
 
+/*
+Message containing CAN frame in ISO-TP formatting. It is required to add a valid IsotpChannel channel since it
+determines to which ECU communication is carried out.
+ */
 message IsotpMessage {
+  /*
+  The ISO-TP ECU channel over which frames are sent and received.
+   */
   IsotpChannel channel            = 1;
+  /*
+  The ISO-TP formatted payload message being sent or received.
+   */
   string payload                  = 2;
 }
 
+/*
+The ISO-TP message channel is required to be defined as it indicates over which ECU, CAN bus and other details
+required to ensure smooth communication between vehicle and server.
+*/
 message IsotpChannel {
+  /*
+  The `bus_name` acts as a reference to that already defined in [BusConfiguration](grpc.md#busconfiguration).
+   */
   string bus_name                             = 1;
+  /*
+  The CAN request identifier to which the payload message is sent to.
+   */
   uint32 request_id                           = 2;
+  /*
+  The CAN response identifier from which messages are received.
+   */
   uint32 response_id                          = 3;
+  /*
+  The extended request address byte that is to be added to the CAN request identifier.
+   */
   optional uint32 extended_request_address    = 4;
+  /*
+  The extended response address byte that is to be added to the CAN response identifier.
+   */
   optional uint32 extended_response_address   = 5;
+  /*
+  This field is used to indicate if padding is required to be added to ISO-TP CAN frames being sent over the channel.
+   */
   optional Padding padding                    = 6;
 }
 
+/*
+An enumeration listing all available options for enable or disabling padding. This is used in the IsotpChannel.
+ */
 enum Padding {
   PADDING_UNDEFINED             = 0;
   PADDING_ENABLED               = 1;

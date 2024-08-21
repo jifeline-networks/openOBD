@@ -44,7 +44,6 @@ enum CanBitRate {
 }
 
 enum TransceiverSpeed {
-    TRANSCEIVER_SPEED_UNDEFINED = 0;
+    TRANSCEIVER_SPEED_LOW       = 0; // Low speed transceiver
     TRANSCEIVER_SPEED_HIGH      = 1; // High speed transceiver
-    TRANSCEIVER_SPEED_LOW       = 2; // Low speed transceiver
 }
