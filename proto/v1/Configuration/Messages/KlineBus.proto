@@ -1,0 +1,26 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Configuration.Messages";
+option java_multiple_files = true;
+
+/*
+A message representing a bus in the vehicle on which K-Line ECUs are present.
+ */
+message KlineBus {
+  uint32 pin = 1;   // The OBD pin on which communication should take place.
+  KlineProtocol kline_protocol = 2;   // The K-Line-specific protocol used during communication.
+  KlineBitRate kline_bit_rate = 3;  // The bit rate used when sending messages on the bus.
+}
+
+enum KlineProtocol {
+    KLINE_PROTOCOL_UNDEFINED      = 0;
+    KLINE_PROTOCOL_ISO14230_SLOW  = 1003;
+    KLINE_PROTOCOL_ISO14230_FAST  = 1004;
+}
+
+enum KlineBitRate {
+    KLINE_BIT_RATE_UNDEFINED  = 0;
+    KLINE_BIT_RATE_9600       = 7;
+    KLINE_BIT_RATE_10400      = 11;
+    KLINE_BIT_RATE_15625      = 18;
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Communication.Messages";
+option java_multiple_files = true;
+
+/*
+A message type used for facilitating communication with K-Line ECUs.
+ */
+message KlineMessage {
+  KlineChannel channel  = 1;  // Defines an ECU and how to communicate with it.
+  string payload        = 2;  // The payload of the message that is exchanged with the ECU.
+}
+
+/*
+Defines the key byte pair used by the KWP2000 protocol (ISO 14230) for configuring communication.
+ */
+message Keyword {
+  uint32 key_byte_1 = 1;
+  uint32 key_byte_2 = 2;
+}
+
+/*
+Defines how to communicate with a K-Line ECU.
+ */
+message KlineChannel {
+  string bus_name             = 1;  // The name of the configured bus on which communication should take place.
+  uint32 ecu_id               = 2;  // The identifier of the ECU to communicate with.
+  optional Keyword keyword    = 3;  // A pair of key bytes that can optionally be set when using the ISO 14230 protocol.
+}

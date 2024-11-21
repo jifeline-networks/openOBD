@@ -1,0 +1,42 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Configuration.Messages";
+option java_multiple_files = true;
+
+message CanBus {
+  uint32 pin_plus = 1;
+  uint32 pin_min = 2;
+  CanProtocol can_protocol = 3;
+  CanBitRate can_bit_rate = 4;
+  optional TransceiverSpeed transceiver = 5;  // Default = `TRANSCEIVER_SPEED_HIGH`.
+}
+
+enum CanProtocol {
+    CAN_PROTOCOL_UNDEFINED  = 0;
+    CAN_PROTOCOL_ISOTP      = 1; // ISOTP protocol
+
+//    CAN_PROTOCOL_TP20       = 2;
+
+    CAN_PROTOCOL_FRAMES     = 3; // Frames
+}
+
+enum CanBitRate {
+    CAN_BIT_RATE_UNDEFINED  = 0;
+    CAN_BIT_RATE_1000       = 1;  // 1000 kbit
+    CAN_BIT_RATE_500        = 2;  // 500 kbit
+    CAN_BIT_RATE_250        = 3;  // 250 kbit
+    CAN_BIT_RATE_125        = 4;  // 125 kbit
+    CAN_BIT_RATE_100        = 5;  // 100 kbit
+    CAN_BIT_RATE_94         = 6;  // 94 kbit
+    CAN_BIT_RATE_83_3       = 7;  // 83.3 kbit
+    CAN_BIT_RATE_50         = 8;  // 50 kbit
+    CAN_BIT_RATE_33_3       = 9;  // 33.3 kbit
+    CAN_BIT_RATE_20         = 10; // 20 kbit
+    CAN_BIT_RATE_10         = 11; // 10 kbit
+    CAN_BIT_RATE_5          = 12; // 5 kbit
+}
+
+enum TransceiverSpeed {
+    TRANSCEIVER_SPEED_LOW       = 0; // Low speed transceiver
+    TRANSCEIVER_SPEED_HIGH      = 1; // High speed transceiver
+}

@@ -5,6 +5,7 @@ option java_multiple_files = true;
 
 import "v1/Communication/Messages/Isotp.proto";
 import "v1/Communication/Messages/Raw.proto";
+import "v1/Communication/Messages/Kline.proto";
 import "v1/Messages/Empty.proto";
 
 service can {
@@ -20,3 +21,9 @@ service can {
   rpc openRawStream(stream RawFrame) returns (stream RawFrame) {}
 }
 
+service kline {
+  /*
+  Opens a bidirectional stream which enables communication with a K-Line ECU.
+   */
+  rpc openKlineStream(stream KlineMessage) returns (stream KlineMessage) {}
+}
