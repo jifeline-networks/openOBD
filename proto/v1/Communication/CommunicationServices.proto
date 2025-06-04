@@ -6,17 +6,18 @@ option java_multiple_files = true;
 import "v1/Communication/Messages/Isotp.proto";
 import "v1/Communication/Messages/Raw.proto";
 import "v1/Communication/Messages/Kline.proto";
+import "v1/Communication/Messages/Terminal15.proto";
 import "v1/Messages/Empty.proto";
 
 service can {
   /*
-  The `openIsotpStream` rpc service opens a bidirectional stream of *IsotpMessage* messages. It is used in ISOTP communication where
-  the client can rely for the ISOTP frame handling on the openOBD stack. It only needs to bother about the payload (e.g. UDS) that is being sent and received.
+  The `openIsotpStream` RPC service opens a bidirectional stream of *IsotpMessage* messages. It is used in ISO-TP communication where
+  the client can rely on openOBD to handle the ISO-TP frames. The client only needs to concern itself with the payload (e.g. UDS) that is being sent and received.
    */
   rpc openIsotpStream(stream IsotpMessage) returns (stream IsotpMessage) {}
   /*
-  The `openRawStream` rpc service opens a bidirectional stream of *RawFrame* messages. These messages can be used to send and receive raw CAN frames.
-  This gives more control over the actual data that is being sent and received on the CAN bus. On the other hand, the client code needs to implement more handling since multiframes etc. are not handled by the openOBD stack.
+  The `openRawStream` RPC service opens a bidirectional stream of *RawFrame* messages. These messages can be used to send and receive raw CAN frames.
+  This gives more control over the actual data that is being sent and received on the CAN bus. On the other hand, the client needs to implement more handling, as aspects such as multi-frames are not handled by openOBD.
   */
   rpc openRawStream(stream RawFrame) returns (stream RawFrame) {}
 }
@@ -26,4 +27,11 @@ service kline {
   Opens a bidirectional stream which enables communication with a K-Line ECU.
    */
   rpc openKlineStream(stream KlineMessage) returns (stream KlineMessage) {}
+}
+
+service terminal15 {
+  /*
+  Opens a stream that provides information on the ignition status (terminal 15).
+   */
+  rpc openTerminal15Stream(EmptyMessage) returns (stream Terminal15Message) {}
 }

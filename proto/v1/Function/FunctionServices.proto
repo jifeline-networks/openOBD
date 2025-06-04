@@ -1,0 +1,110 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Function";
+option java_multiple_files = true;
+
+import "v1/Function/Messages/Function.proto";
+import "v1/Messages/Empty.proto";
+
+service function {
+  /*
+  The `startFunctionContext()` rpc call can be used to prepare the handover of an openOBD session to another service that may perform
+  a diagnostic function.
+
+  This function is executed within its own function context. The `FunctionCall` message contains the definition of the function id that
+  will be executed. It will also get its own function instance id that is unique identifier that can be used to address this specific function execution.
+
+  This rpc call can *only* be made within an openOBD session that is in the 'available' state. It is not possible to create a context on an openOBD session when it is in the 'active' state.
+  The 'active' state needs to be released first using the `finish()` rpc call.
+
+  !!! note
+
+    The `startFunctionContext()` call is not required, i.e. it is possible to run operations that are not in the context of a an (external) function
+
+  A successful call to this `startFunctionContext()` rpc will yield a monitor token (contained in FunctionContext message). This monitor token is exclusively used for calls to the `monitorFunctionContext()` service.
+  This allows for monitoring the freshly created function context and informs the listener when the function context is being finished.
+  */
+  rpc startFunctionContext(EmptyMessage) returns (FunctionContext) {}
+
+  /*
+  This function can be used to monitor the execution of a procedure in a function context. This procedure might be running on another host.
+
+  A monitor token must be sent as bearer token in the header with every request. This monitor token is retrieved by the `startFunctionContext()` call.
+  The incoming stream will provide the caller with regular updates on the state of the openOBD session.
+  An update will contain (comparable to the `openSessionTokenStream()` rpc) a fresh monitor token. The caller needs to regularly
+  update its monitor token for the `monitorFunctionContext()` function call. In case the connection is lost, a recent monitor token needs to be used to reconnect.
+
+  A function context can be closed by calling the `finish()` rpc. The `finish()` call can only be made by the process that is authenticated to (i.e. activated) the openOBD session.
+  The last FunctionContext received over the `monitorFunctionContext()` incoming stream will contain a fresh authentication token that can be used to resume operation on the openOBD session by the calling procedure.
+  */
+  rpc monitorFunctionContext(FunctionContext) returns (stream FunctionContext) {}
+
+  /*
+  The `registerFunctionDetails()` call links the function details (like function id, name etc.) to the current function context. The function broker uses this information for correct administration of which functions are being called.
+  When this call is repeated within the same function context it will:
+
+    - Succeed when it uses the same function id
+    - Fail when it uses a different function id
+
+  The function broker ensures that the function id that is requested by a client matches the function id that is registered in the function context.
+  If the function broker fails to successfully call the `registerFunctionDetails()` method, this will result in a failing function call.
+
+  In the case that no function details have been registered yet, the first call to `registerFunctionDetails()` registers the function details like the id, name and description. This will always be successful.
+
+  When the `authenticate()` call is made without first calling the `registerFunctionDetails()` method, then the registered function id will be set to match the uniquely created function context id.
+
+  !!! note
+
+    This function registers function details like name, description, version. It is however **NOT** required to initialize the function details before a `runFunction()` call.
+    In the end, the function broker will always make the `registerFunctionDetails()` call before actually passing a function call to the function launcher.
+  */
+  rpc registerFunctionDetails(FunctionDetails) returns (EmptyMessage) {}
+
+  /*
+  The `getFunctionDetails()` call retrieves the details of the active function in the current context. Values might be empty when no function details have been registered yet.
+  */
+  rpc getFunctionDetails(EmptyMessage) returns (FunctionDetails) {}
+
+  /*
+  Set Function arguments for the newly created context
+  The header bearer token identifies which session context the argument should be placed into
+  This function can only be called as long as the target context did not authenticate() yet (is not in 'active' state)
+  */
+  rpc setFunctionArgument(Variable) returns (EmptyMessage) {}
+
+  /*
+  Get Function arguments set for the current context
+  */
+  rpc getFunctionArgumentList(EmptyMessage) returns (VariableList) {}
+
+  /*
+  Set Function results and store them in the current context
+  */
+  rpc setFunctionResult(Variable) returns (EmptyMessage) {}
+
+  /*
+  Obtain Function results set by the calling context
+  */
+  rpc getFunctionResultList(EmptyMessage) returns (VariableList) {}
+
+  /*
+  Obtain the variables that were set by a particular session context
+  */
+  rpc getVariableList(VariableSelection) returns (VariableList) {}
+
+  /*
+  The `setVariable()` sets a Variable in the function context, session context.
+  */
+  rpc setVariable(Variable) returns (EmptyMessage) {}
+
+  /*
+  The `getVariable()` call retrieves a Variable.
+  */
+  rpc getVariable(Variable) returns (Variable) {}
+
+  /*
+  The `deleteVariable()` call can only be made on the current context or the global context.
+  */
+  rpc deleteVariable(Variable) returns (EmptyMessage) {}
+
+}

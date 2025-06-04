@@ -1,0 +1,77 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Function.Messages";
+option java_multiple_files = true;
+
+import "v1/Session/Messages/ServiceResult.proto";
+import "google/protobuf/any.proto";
+
+message FunctionContext {
+  string id = 1;                    // Unique context uuid, it is always uniquely generated for every created context. It is created by the service and not by the client. Any value of the client will be ignored.
+  bool finished = 3;                // Boolean which reports whether the context has been finished (by calling `finish()`)
+  string monitor_token = 4;         // A token that can only be used in the header to make the `monitorFunctionContext()` call. The client needs to update its bearer token in the header with the latest received monitor token in order to remain authenticated.
+  string authentication_token = 5;  // A new authentication token for the newly created context, this token should be used for the `authentication()` call in the new context (the current context cannot be authenticated as long as the new context is active).
+  optional ServiceResult service_result = 6; // Only when the 'finished' boolean is 'true' does this service result have any meaning
+}
+
+message FunctionId {
+  string value = 1;                   // Function id (uuid) of function that is executed in this context
+}
+
+message FunctionDetails {
+  string id                                   = 1; // Function uuid
+  string version                              = 2; // Version
+  string name                                 = 3; // Function name
+  optional string description                 = 4; // Optional function description
+}
+
+/*
+The ContextType is used to indicate which context is used for variable handling
+*/
+enum ContextType {
+  UNDEFINED_CONTEXT     = 0;    // Undefined context
+  GLOBAL_CONTEXT        = 1;    // The "global" value refers to the openOBD session itself (from all contexts it is possible to refer to this "global" context
+  FUNCTION_CONTEXT      = 2;    // The function context is used when setting function arguments and results
+  /*
+  !!! warning "alpha version"
+
+    Special "connection" context, a.k.a connection meta data*
+
+    Apart from the contexts above, we also have the special "connection" context. This context allows to read the variables that are stored on the ticket/connection itself. They transcend the
+    individual openOBD sessions and can be used to transfer information from one openOBD session to another. There are some system defined variables that may be present in an openOBD session.
+    There are some limitations. The variables are limited in their number and the length of their values. The values can only be strings (not objects like in other contexts).
+
+    *This is still in alpha stage*: A detailed description will follow.
+  */
+  CONNECTION_CONTEXT    = 3;
+}
+
+/*
+Retrieves all variables that are stored in a specific context. Optionally a prefix can be used to retrieve a subset of variables, only matching the given prefix.
+ */
+message VariableSelection {
+  ContextType type = 1;
+  optional string prefix = 2;
+}
+
+/*
+Variable list
+ */
+message VariableList {
+  repeated Variable variables = 1;
+}
+
+/*
+ Variables can be stored as 'key' 'value' pairs.
+ Where the value might be a string or any proto object.
+ 3rd parties may use their own proto definition for objects that are stored as a variable.
+ It could also be used to pass a particular IsotpChannel from one context to another.
+ */
+message Variable {
+  ContextType type = 1;
+  string key = 2;
+  oneof Val {
+    string value = 3;
+    google.protobuf.Any object = 4;
+  }
+}

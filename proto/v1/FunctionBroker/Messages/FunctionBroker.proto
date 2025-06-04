@@ -1,0 +1,74 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.FunctionBroker.Messages";
+option java_multiple_files = true;
+
+import "v1/SessionController/Messages/SessionController.proto";
+import "v1/Function/Messages/Function.proto";
+
+/*
+Message used for encasing the openOBD session token. It is required to be sent for every service call via the metadata as an indication of
+the client's current session. Can be retrieved by using [sessionController](grpc.md#sessioncontroller) service.
+ */
+message FunctionBrokerToken {
+  string value = 1;
+}
+
+message FunctionSignature {
+  string id        = 1;      // Generated id (uuid) for the new function
+  string signature = 2;      // Function signature serving as verification of function ownership
+}
+
+message FunctionUpdate {
+  FunctionUpdateType type                                 = 1; // Identifies whether it is request or response
+  oneof FunctionData {
+    FunctionRegistration function_registration            = 2; // Send update to broker about available/unavailable functions
+    FunctionCall function_call                            = 3; // Send response to broker to a FunctionCall request
+    FunctionBrokerToken function_broker_token             = 4; // A new function broker token is sent regularly by the broker to keep the stream open
+    FunctionBrokerReconnect function_broker_reconnect     = 5; // Indicates that a new function stream should be created
+  }
+  optional FunctionUpdateResponse response                = 6;  // Optional field that is only set in the response message
+  optional string response_description                    = 7;  // Optional description string for additional information on failure (only in response)
+}
+
+enum FunctionUpdateType {
+  FUNCTION_UPDATE_TYPE_UNDEFINED   = 0;
+  FUNCTION_UPDATE_TYPE_REQUEST     = 1;
+  FUNCTION_UPDATE_TYPE_RESPONSE    = 2;
+}
+
+message FunctionRegistration {
+  FunctionDetails details                     = 1; // Function details
+  FunctionRegistrationState state             = 2; // The current state of the function, whether it is on-line or not
+  optional string signature                   = 3; // Proof of function ownership. Required when registering a function
+}
+
+enum FunctionRegistrationState {
+  FUNCTION_REGISTRATION_STATE_UNDEFINED      = 0;
+  FUNCTION_REGISTRATION_STATE_ONLINE         = 1;   // Function is on-line and may be called by the broker
+  FUNCTION_REGISTRATION_STATE_OFFLINE        = 2;   // Function is off-line but known as a registered function
+  FUNCTION_REGISTRATION_STATE_UNAVAILABLE    = 3;   // Function is not on-line and not registered as a function
+}
+
+message FunctionCall {
+  string id                       = 1;  // Unique function id
+  optional string caller_id       = 2;  // Unique provider id representing the caller (filled out by the function broker)
+  SessionInfo session_info        = 3;  // Session info of an openOBD session that is in the 'available' state (it is available for running a function)
+}
+
+/**
+Message used primarily to indicate that the Function Broker will go offline. Functions will have to be registered again in a new stream, when this message is sent.
+ */
+message FunctionBrokerReconnect {
+  uint32 seconds_until_disconnect   = 1;  // Indicates the amount of time after which the Function Broker will disconnect the stream
+}
+
+enum FunctionUpdateResponse {
+  FUNCTION_UPDATE_UNDEFINED     = 0;
+  FUNCTION_UPDATE_SUCCESS       = 1;
+  FUNCTION_UPDATE_FAILED        = 2;
+  FUNCTION_UPDATE_UNAVAILABLE   = 3;
+  FUNCTION_UPDATE_UNAUTHORIZED  = 4;
+}
+
+

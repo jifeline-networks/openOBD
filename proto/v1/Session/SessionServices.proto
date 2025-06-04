@@ -3,28 +3,43 @@ package openOBD.v1;
 option java_package = "com.jifeline.OpenOBD.Session";
 option java_multiple_files = true;
 
-import "v1/Session/Messages/ServiceResult.proto";
+
 import "v1/Session/Messages/Session.proto";
+import "v1/Session/Messages/ServiceResult.proto";
 import "v1/Messages/Empty.proto";
 
+/*
+Calls to the session services require either an initial authentication token or a session token. This token needs to be send as bearer token
+in the header of the gRPC request.
+ */
 service session {
   /*
-  The `authenticate()` rpc call is used to "claim" an openOBD session. Once an openOBD session is created and attached to
-  a running connection on the Jifeline network it is in an 'available' state. The only allowed and also required call to continue with
-  this session is this `authenticate()` call. It needs an initial bearer token that is present in the `SessionInfo` message.
+  When an openOBD session is created and attached to a running connection on the Jifeline network it is in an 'available' state.
+  The `authenticate()` rpc call is used to "claim" an openOBD session.  The `authenticate()` call will transition the openOBD
+  session into the 'active' state. An authentication token is required. This token can be obtained from the `SessionInfo` message or from the `FunctionContext` message (in case a new function context has been created).
   <br/>
   Once this call has been made, any subsequent calls need to be made using a new bearer token that is contained in the `SessionToken` response.
-  It is advised to first set up a SessionToken stream using the `openSessionTokenStream()` rpc call.
+  It is advised that the next step in your process is to set up a SessionToken stream using the `openSessionTokenStream()` rpc call.
    */
   rpc authenticate(EmptyMessage) returns (SessionToken) {}
+
+  /*
+  The `assertAuthenticationPossible()` method can be called just like the `authenticate()` method. It does not authenticate and therefore can be used to check whether the
+  session is still in the 'available' state. If it is not, this call will result in an exception. An authentication token is required for this call.
+   */
+  rpc assertAuthenticationPossible(EmptyMessage) returns (EmptyMessage) {}
+
   /*
   The `openSessionTokenStream()` rpc call is used to open a continuous stream of `SessionToken` messages. When a new `SessionToken` is received on this stream
   the subsequent calls that are being made on an openOBD session need to incorporate the freshly received token as their bearer token in the header of their gRPC calls.
    */
   rpc openSessionTokenStream(EmptyMessage) returns (stream SessionToken) {}
+
   /*
-  The `finish(ServiceResult)` rpc call is used to gracefully finish an openOBD session. The `ServiceResult` argument message indicates whether the service was executed successfully.
-   */
+  The `finish(ServiceResult)` rpc call is used to gracefully finish a function context or (when nog contexts where created) the openOBD session. The `ServiceResult` argument message indicates whether the service was executed successfully.
+  A new `authenticate()` rpc call can be made on the session when a function context was finished. The openOBD session terminates when the last function context has been finished.
+  */
   rpc finish(ServiceResult) returns (EmptyMessage) {}
+
 }
 

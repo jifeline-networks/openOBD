@@ -4,6 +4,7 @@ option java_package = "com.jifeline.OpenOBD.Configuration";
 option java_multiple_files = true;
 
 import "v1/Configuration/Messages/BusConfiguration.proto";
+import "v1/Configuration/Messages/Configuration.proto";
 import "v1/Messages/Empty.proto";
 
 service config {
@@ -12,4 +13,15 @@ service config {
   up to four busses may be configured at a time.
   */
   rpc configureBus(stream BusConfiguration) returns (EmptyMessage) {}
+
+  /*
+    The `getConfiguration()` call will send all configured busses and channels in the openOBD session. Initially there will be no
+    configurations present. But when a session has been initialized by another process, it is possible to obtain the current active configuration.
+    This is useful when for some reason the gRPC connection is dropped and communication needs to be build up again with the openOBD session.
+    <br/>
+    Another use case is when one specialized function sets up the communication with a specific module, unlocks it, and then hands over the communication control to another function.
+    The second process can then proceed coding once it received the configuration using this command.
+   */
+  rpc getConfiguration(EmptyMessage) returns (Configuration) {}
+
 }

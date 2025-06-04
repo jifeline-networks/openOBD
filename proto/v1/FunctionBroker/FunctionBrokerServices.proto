@@ -1,0 +1,61 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.FunctionBroker";
+option java_multiple_files = true;
+
+import "v1/SessionController/Messages/SessionController.proto";
+import "v1/FunctionBroker/Messages/FunctionBroker.proto";
+import "v1/Function/Messages/Function.proto";
+import "v1/Messages/Empty.proto";
+
+/*
+The function broker is an intermediary between function hosting and function launchers. Dashboard integration of your openOBD functions is enabled by the function broker.
+ */
+service functionBroker {
+  /*
+  This service is used to authenticate with the FunctionBroker service as a client.
+  The credentials that are required need to be contained in the Authenticate message. It returns a FunctionBrokerToken.
+  */
+  rpc getFunctionBrokerToken(Authenticate) returns (FunctionBrokerToken) {}
+
+  /*
+  The `openFunctionStream()` call opens a bi-directional stream.
+  The outgoing stream is used by a function launcher to register its functions to the broker. One function launcher may
+  send multiple function definitions over the same stream and register that they are on-line and ready to be called by another party.
+  <br/>
+  The incoming stream is use used by the function broker to forward function calls from a function caller to a function launcher.
+  Only when all function registrations are registered as off-line, the bi-directional stream will be closed.
+  <br/>
+  The function broker regularly sends FunctionUpdate "ping" messages, that are meant to keep the stream open (and check if the function launcher is still there).
+  */
+  rpc openFunctionStream(stream FunctionUpdate) returns (stream FunctionUpdate) {}
+
+  /*
+  The `runFunction()` call is used by function callers to execute a function, offered by a function launcher, on their openOBD session.
+  The openOBD function that is being called should be registered as 'on-line' through the `openFunctionCallStream()` call.
+  <br/>
+  When the function is known by the function broker and registered as 'on-line', the function broker will check some preconditions:
+
+   - Is the caller allowed to make this function call
+   - Is the right function information registered through `registerFunctionDetails()`. If it is not done yet, the function broker will register the details.
+   - Is the openOBD session in the 'available' state (i.e. is it possible for an eventual launcher to `authenticate()` with the supplied information.
+
+  When all preconditions described above are met, the function broker will forward the FunctionCall to the specific function launcher that is hosting the function.
+  */
+  rpc runFunction(FunctionCall) returns (FunctionUpdate);
+
+  /*
+  The `getFunctionRegistration()` may be used to function callers to check te availability and some more information of a certain function without executing it.
+  */
+  rpc getFunctionRegistration(FunctionId) returns (FunctionRegistration);
+
+  /*
+  The `generateFunctionSignature()` call can be used to generate a new function id and signature.
+  This signature ensures that the retrieved id can only be used by the provider that made the registration. This makes is impossible for other parties to forge a function id once it is assigned to a specific provider.
+  */
+  rpc generateFunctionSignature(EmptyMessage) returns (FunctionSignature);
+}
+
+
+
+

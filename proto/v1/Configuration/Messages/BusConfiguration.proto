@@ -5,11 +5,13 @@ option java_multiple_files = true;
 
 import "v1/Configuration/Messages/CanBus.proto";
 import "v1/Configuration/Messages/KlineBus.proto";
+import "v1/Configuration/Messages/Terminal15Bus.proto";
 
 message BusConfiguration {
   string bus_name = 1;
   oneof BusDefinition {
     CanBus can_bus = 2;
     KlineBus kline_bus = 3;
+    Terminal15Bus terminal15_bus = 4;
   }
 }

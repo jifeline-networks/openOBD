@@ -1,0 +1,25 @@
+syntax = "proto3";
+import "v1/Configuration/Messages/BusConfiguration.proto";
+import "v1/Communication/Messages/Raw.proto";
+import "v1/Communication/Messages/Isotp.proto";
+import "v1/Communication/Messages/Kline.proto";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Configuration.Messages";
+option java_multiple_files = true;
+
+message ConfiguredChannel {
+  oneof ChannelDefinition {
+    RawChannel raw_channel = 1;
+    IsotpChannel isotp_channel = 2;
+    KlineChannel kline_channel = 3;
+  }
+}
+
+/*
+ List of buses and channels that are active on the current running openOBD session.
+ */
+message Configuration {
+  repeated BusConfiguration buses = 1;
+  repeated ConfiguredChannel channels = 2;
+}
+

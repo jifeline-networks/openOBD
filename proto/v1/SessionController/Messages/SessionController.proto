@@ -8,15 +8,15 @@ message TicketId {
   string value = 1; // Can be the ticket number (e.g. 7848095) or UUID (e.g. e67b35ae-cbff-4213-a935-73f79bdd15be).
 }
 
-// Holds the connector number required to start an openOBD session.
+// Holds the connector number or connector identifier required to start an openOBD session.
 message ConnectorId {
-  string value = 1; // The connector number.
+  string value = 1; // Can be the connector number (e.g. 900101060) or UUID (e.g. ec83f5a4-76d9-3362-a11c-5c721327f5aa).
 }
 
 // Holds info on an openOBD session. Can be retrieved by using the [sessionController](grpc.md#sessioncontroller) service.
 message SessionInfo {
   string id = 1;  // A UUID representing this session.
-  string state = 2;  // The current [state](protocol.md#session-states) of the session. Possible values: `available`, `active`, `interrupted`, `finished`, and `failed`.
+  string state = 2;  // The current [state](../design/protocol.md#session-states) of the session. Possible values: `available`, `active`, `interrupted`, `finished`, and `failed`.
   string created_at = 3;  // The creation timestamp according to ISO 8601 (e.g. 2024-04-16:13:36.651+0000).
   string grpc_endpoint = 4;   // The endpoint to which gRPC messages need to be sent.
   string authentication_token = 5;  // The single-use token which is used to authenticate this openOBD session.
@@ -27,14 +27,14 @@ message SessionInfo {
 message Authenticate {
   string client_id = 1;
   string client_secret = 2;
-  string api_key = 3;
+  //  string api_key = 3; Deprecated, do not use this number anymore for backwards compatibility
   string cluster_id = 4;
 }
 // TODO: link to the page where authentication is explained
 
 /*
-Message used for encasing the openOBD session token. It is required to be sent for every service call via the metadata as an indication of
-the client's current session. Can be retrieved by using [sessionController](grpc.md#sessioncontroller) service.
+Message used for encasing the openOBD session controller token. It is required to be sent for every service call via the metadata as an indication of
+the client's current session with the session controller. Can be retrieved by using the [sessionController](grpc.md#sessioncontroller) service.
  */
 message SessionControllerToken {
   string value = 1;

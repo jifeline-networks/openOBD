@@ -4,5 +4,5 @@ option java_package = "com.jifeline.OpenOBD.Session.Messages";
 option java_multiple_files = true;
 
 message SessionToken {
-  string value = 1; // Session token for a running openOBD session
+  string value = 1;
 }

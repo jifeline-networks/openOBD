@@ -1,0 +1,20 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Communication.Messages";
+option java_multiple_files = true;
+
+/*
+ Message containing the state of a Terminal15 pin.
+*/
+message Terminal15Message {
+  optional Terminal15State state = 1; // The value of the state
+}
+
+/*
+An enumeration listing all available options for the state of a terminal15 pin
+*/
+enum Terminal15State {
+  STATE_UNDEFINED      = 0;
+  STATE_ON             = 1;
+  STATE_OFF            = 2;
+}
