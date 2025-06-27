@@ -13,10 +13,8 @@ message CanBus {
 
 enum CanProtocol {
     CAN_PROTOCOL_UNDEFINED  = 0;
-    CAN_PROTOCOL_ISOTP      = 1; // ISOTP protocol
-
-//    CAN_PROTOCOL_TP20       = 2;
-
+    CAN_PROTOCOL_ISOTP      = 1; // ISO-TP protocol
+    CAN_PROTOCOL_TP20       = 2; // (VW) TP 2.0 protocol
     CAN_PROTOCOL_FRAMES     = 3; // Frames
 }
 

@@ -1,0 +1,33 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Communication.Messages";
+option java_multiple_files = true;
+
+/*
+Message containing a CAN frame in (VW) TP2.0 formatting. It is required to add a valid TP2.0 channel since it
+determines to which ECU communication is carried out.
+ */
+message Tp20Message {
+  /*
+  The TP2.0 ECU channel over which frames are sent and received.
+   */
+  Tp20Channel channel            = 1;
+  /*
+  The TP2.0 formatted payload message being sent or received.
+   */
+  string payload                  = 2;
+}
+
+/*
+The TP2.0 message channel is required to be defined as it indicates the address of communication between vehicle and server.
+*/
+message Tp20Channel {
+  /*
+  The `bus_name` acts as a reference to that already defined in [BusConfiguration](grpc.md#busconfiguration).
+   */
+  string bus_name                             = 1;
+  /*
+  The logical address which is used for communication.
+   */
+  uint32 logical_address                      = 2;
+}

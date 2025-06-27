@@ -4,7 +4,7 @@ option java_package = "com.jifeline.OpenOBD.Communication.Messages";
 option java_multiple_files = true;
 
 /*
-Message containing CAN frame in ISO-TP formatting. It is required to add a valid IsotpChannel channel since it
+Message containing a CAN frame in ISO-TP formatting. It is required to add a valid Isotp channel since it
 determines to which ECU communication is carried out.
  */
 message IsotpMessage {
@@ -47,6 +47,10 @@ message IsotpChannel {
   This field is used to indicate if padding is required to be added to ISO-TP CAN frames being sent over the channel.
    */
   optional Padding padding                    = 6;
+  /*
+  This field is used to set the keep alive functionality for the ISO-TP channel.
+   */
+  optional KeepAlive keep_alive               = 7;
 }
 
 /*
@@ -59,4 +63,10 @@ enum Padding {
   PADDING_DISABLED              = 3;
   PADDING_SET_FROM_ECU          = 4;
   PADDING_SET_TOWARDS_ECU       = 5;
+}
+
+enum KeepAlive {
+  KEEP_ALIVE_UNDEFINED          = 0;
+  KEEP_ALIVE_ENABLED            = 1;
+  KEEP_ALIVE_DISABLED           = 2;
 }

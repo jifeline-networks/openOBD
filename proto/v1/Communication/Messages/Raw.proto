@@ -4,7 +4,7 @@ option java_package = "com.jifeline.OpenOBD.Communication.Messages";
 option java_multiple_files = true;
 
 /*
- Message containing non formatted CAN frame. The fields payload and can_request_id are optional for this message because this message can
+ Message containing a non formatted CAN frame. The fields payload and can_request_id are optional for this message because this message can
  also be used in situations where no frames are desired to be sent. In this situation the user desires only to listen to the frames
  being transmitted on the subscribed CAN identifiers
  */

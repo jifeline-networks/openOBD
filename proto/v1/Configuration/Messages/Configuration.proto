@@ -1,17 +1,20 @@
 syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Configuration.Messages";
+option java_multiple_files = true;
+
 import "v1/Configuration/Messages/BusConfiguration.proto";
 import "v1/Communication/Messages/Raw.proto";
 import "v1/Communication/Messages/Isotp.proto";
 import "v1/Communication/Messages/Kline.proto";
-package openOBD.v1;
-option java_package = "com.jifeline.OpenOBD.Configuration.Messages";
-option java_multiple_files = true;
+import "v1/Communication/Messages/Tp20.proto";
 
 message ConfiguredChannel {
   oneof ChannelDefinition {
     RawChannel raw_channel = 1;
     IsotpChannel isotp_channel = 2;
     KlineChannel kline_channel = 3;
+    Tp20Channel tp20_channel = 4;
   }
 }
 

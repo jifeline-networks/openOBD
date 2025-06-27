@@ -14,6 +14,8 @@ message Control {
     FreeText control_freetext           = 6;
     Numbers control_number              = 8;
   }
+  repeated LabelTranslations translations    = 9;  // Translations for all texts shown in this control.
+  optional Image image                       = 10;
 }
 
 // Indicates the recipient of the UI.
@@ -21,6 +23,16 @@ enum InterfaceType {
   INTERFACE_UNDEFINED  = 0;
   INTERFACE_USER       = 1;   // User interface that is presented in the client application to the customer.
   INTERFACE_OPERATOR   = 2;   // User interface that is presented in the partner dashboard to the operator.
+}
+
+message LabelTranslations {
+  string label                      = 1;  // Text used in the original control.
+  repeated Translation translations = 2;  // List of translations for the given label in supported languages.
+}
+
+message Translation {
+  string language                   = 1;  // ISO 639-1 language code indicating the language for this translation.
+  string label                      = 2;  // Translated label in the given language.
 }
 
 // Shows a text message with no user interaction. The response will be returned the moment the UI is displayed.
@@ -59,4 +71,8 @@ message Numbers {
   uint32 minimum          = 2;  // The lowest number to show (inclusive).
   uint32 maximum          = 4;  // The highest number to show (inclusive).
   optional uint32 answer  = 3;  // The selected number.
+}
+
+message Image {
+  string url      = 1;
 }

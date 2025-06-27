@@ -7,5 +7,5 @@ option java_multiple_files = true;
 A message representing a bus in the vehicle connected to terminal 15, controlled by the ignition switch
  */
 message Terminal15Bus {
-  uint32 pin = 1;   // The OBD pin on which communication should take place.
+  uint32 pin = 1;   // The OBD pin on which the ignition status will be set.
 }

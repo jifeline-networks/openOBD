@@ -7,6 +7,7 @@ import "v1/Communication/Messages/Isotp.proto";
 import "v1/Communication/Messages/Raw.proto";
 import "v1/Communication/Messages/Kline.proto";
 import "v1/Communication/Messages/Terminal15.proto";
+import "v1/Communication/Messages/Tp20.proto";
 import "v1/Messages/Empty.proto";
 
 service can {
@@ -20,6 +21,11 @@ service can {
   This gives more control over the actual data that is being sent and received on the CAN bus. On the other hand, the client needs to implement more handling, as aspects such as multi-frames are not handled by openOBD.
   */
   rpc openRawStream(stream RawFrame) returns (stream RawFrame) {}
+  /*
+  The `openTp20Stream` RPC service opens a bidirectional stream of *Tp20Message* messages. It is used in TP2.0 communication where the client can
+  rely on openOBD to handle the data channel management. The client only needs to supply an initial address and any further payloads that will be sent and received
+   */
+  rpc openTp20Stream(stream Tp20Message) returns (stream Tp20Message) {}
 }
 
 service kline {
