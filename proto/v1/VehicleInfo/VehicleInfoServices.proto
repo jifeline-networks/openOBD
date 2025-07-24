@@ -1,0 +1,17 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.VehicleInfo";
+option java_multiple_files = true;
+
+import "v1/VehicleInfo/Messages/VehicleInfo.proto";
+import "v1/Messages/Empty.proto";
+
+/*
+These services are used to retrieve information about the vehicle.
+*/
+service vehicleInfo {
+  /*
+  This service returns a list of ECUs that have been found by the remote to be present in the vehicle.
+   */
+  rpc getEcuList(EmptyMessage) returns (EcuList) {}
+}
