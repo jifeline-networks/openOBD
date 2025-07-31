@@ -8,6 +8,7 @@ import "v1/Communication/Messages/Raw.proto";
 import "v1/Communication/Messages/Isotp.proto";
 import "v1/Communication/Messages/Kline.proto";
 import "v1/Communication/Messages/Tp20.proto";
+import "v1/Communication/Messages/Doip.proto";
 
 message ConfiguredChannel {
   oneof ChannelDefinition {
@@ -15,6 +16,7 @@ message ConfiguredChannel {
     IsotpChannel isotp_channel = 2;
     KlineChannel kline_channel = 3;
     Tp20Channel tp20_channel = 4;
+    DoipChannel doip_channel = 5;
   }
 }
 

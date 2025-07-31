@@ -8,6 +8,7 @@ import "v1/Communication/Messages/Raw.proto";
 import "v1/Communication/Messages/Kline.proto";
 import "v1/Communication/Messages/Terminal15.proto";
 import "v1/Communication/Messages/Tp20.proto";
+import "v1/Communication/Messages/Doip.proto";
 import "v1/Messages/Empty.proto";
 
 service can {
@@ -40,4 +41,11 @@ service terminal15 {
   Opens a stream that provides information on the ignition status (terminal 15).
    */
   rpc openTerminal15Stream(EmptyMessage) returns (stream Terminal15Message) {}
+}
+
+service doip {
+  /*
+  Opens a bidirectional stream to communicate with an ECU using DoIP.
+   */
+  rpc openDoipStream(stream DoipMessage) returns (stream DoipMessage) {}
 }

@@ -6,6 +6,7 @@ option java_multiple_files = true;
 import "v1/Configuration/Messages/CanBus.proto";
 import "v1/Configuration/Messages/KlineBus.proto";
 import "v1/Configuration/Messages/Terminal15Bus.proto";
+import "v1/Configuration/Messages/DoipBus.proto";
 
 message BusConfiguration {
   string bus_name = 1;
@@ -13,5 +14,6 @@ message BusConfiguration {
     CanBus can_bus = 2;
     KlineBus kline_bus = 3;
     Terminal15Bus terminal15_bus = 4;
+    DoipBus doip_bus = 5;
   }
 }

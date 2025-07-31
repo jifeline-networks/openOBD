@@ -1,0 +1,36 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Configuration.Messages";
+option java_multiple_files = true;
+
+/*
+A message representing a bus in the vehicle on which ECUs using DoIP are present. *Note: DoIP communication is currently in beta, so unexpected behaviour may occur.*
+ */
+message DoipBus {
+  DoipOption doip_option = 1;   // The ISO 13400 DoIP option to use for communication.
+  DoipNetworkConfiguration doip_network_configuration = 2;  // The network configuration used during communication, dependent on the manufacturer of the vehicle.
+}
+
+// The DoIP option as specified according to ISO 13400.
+enum DoipOption {
+    DOIP_OPTION_UNDEFINED   = 0;
+    DOIP_OPTION_1           = 1;    // Uses OBD pins 1 and 9.
+    DOIP_OPTION_2           = 2;    // Uses OBD pins 3 and 11.
+}
+
+/*
+The network configuration to use during communication.
+The network configuration primarily depends on the manufacturer of the vehicle with which communication should take place.
+ */
+enum DoipNetworkConfiguration {
+    DOIP_NETWORK_CONFIGURATION_UNDEFINED    = 0;
+    DOIP_NETWORK_CONFIGURATION_1            = 3001;    // Mainly used for JLR.
+    DOIP_NETWORK_CONFIGURATION_2            = 3002;    // Mainly used for Volvo.
+    DOIP_NETWORK_CONFIGURATION_3            = 3003;    // Mainly used for BMW.
+    DOIP_NETWORK_CONFIGURATION_4            = 3004;    // Mainly used for Daimler.
+    DOIP_NETWORK_CONFIGURATION_5            = 3005;    // Mainly used for VAG.
+    DOIP_NETWORK_CONFIGURATION_6            = 3006;    // Mainly used for Chrysler.
+    DOIP_NETWORK_CONFIGURATION_7            = 3007;    // Mainly used for PSA.
+    DOIP_NETWORK_CONFIGURATION_8            = 3008;    // Mainly used for GM.
+    DOIP_NETWORK_CONFIGURATION_9            = 3009;    // Mainly used for Renault.
+}

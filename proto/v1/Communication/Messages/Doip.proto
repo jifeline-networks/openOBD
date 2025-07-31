@@ -1,0 +1,22 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Communication.Messages";
+option java_multiple_files = true;
+
+/*
+A message type used for communication with ECUs using DoIP. *Note: DoIP communication is currently in beta, so unexpected behaviour may occur.*
+ */
+message DoipMessage {
+  DoipChannel channel   = 1;  // The DoIP channel that defines the ECU to communicate with.
+  string payload        = 2;  // The payload of the message that is exchanged with the ECU.
+}
+
+/*
+A message defining the ECU for which DoIP communication should take place.
+*/
+message DoipChannel {
+  string bus_name     = 1;  // The name of the configured bus on which communication should take place.
+  uint32 gateway_id   = 2;  // The ID of the gateway through which communication with the ECU should take place.
+  uint32 tester_id    = 3;  // The identifier that the ECU should send its response to.
+  uint32 ecu_id       = 4;  // The identifier of the ECU to communicate with.
+}

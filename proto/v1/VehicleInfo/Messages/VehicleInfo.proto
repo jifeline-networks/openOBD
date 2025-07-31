@@ -5,6 +5,7 @@ option java_multiple_files = true;
 
 import "v1/Configuration/Messages/CanBus.proto";
 import "v1/Configuration/Messages/KlineBus.proto";
+import "v1/Configuration/Messages/DoipBus.proto";
 
 message EcuList {
   repeated Ecu ecus = 1;
@@ -14,6 +15,7 @@ message Ecu {
   oneof EcuType {
     IsotpEcu isotp_ecu  = 1;
     KlineEcu kline_ecu  = 2;
+    DoipEcu doip_ecu    = 3;
   }
 }
 
@@ -28,4 +30,11 @@ message IsotpEcu {
 message KlineEcu {
   KlineBus kline_bus  = 1;
   uint32 ecu_id       = 2;
+}
+
+message DoipEcu {
+  DoipBus doip_bus  = 1;
+  uint32 gateway_id = 2;
+  uint32 tester_id  = 3;
+  uint32 ecu_id     = 4;
 }

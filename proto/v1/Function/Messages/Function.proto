@@ -27,23 +27,20 @@ message FunctionDetails {
 
 /*
 The ContextType is used to indicate which context is used for variable handling
+
+!!! warning "Connection context is in alpha"
+
+  Apart from the other contexts, we also have the special "connection" context. This context allows to read the variables that are stored on the ticket/connection itself. They transcend the
+  individual openOBD sessions and can be used to transfer information from one openOBD session to another. There are some system defined variables that may be present in an openOBD session.
+  There are some limitations. The variables are limited in their number and the length of their values. The values can only be strings (not objects like in other contexts).
+
+  This is still in alpha stage: a detailed description will follow.
 */
 enum ContextType {
   UNDEFINED_CONTEXT     = 0;    // Undefined context
   GLOBAL_CONTEXT        = 1;    // The "global" value refers to the openOBD session itself (from all contexts it is possible to refer to this "global" context
   FUNCTION_CONTEXT      = 2;    // The function context is used when setting function arguments and results
-  /*
-  !!! warning "alpha version"
-
-    Special "connection" context, a.k.a connection meta data*
-
-    Apart from the contexts above, we also have the special "connection" context. This context allows to read the variables that are stored on the ticket/connection itself. They transcend the
-    individual openOBD sessions and can be used to transfer information from one openOBD session to another. There are some system defined variables that may be present in an openOBD session.
-    There are some limitations. The variables are limited in their number and the length of their values. The values can only be strings (not objects like in other contexts).
-
-    *This is still in alpha stage*: A detailed description will follow.
-  */
-  CONNECTION_CONTEXT    = 3;
+  CONNECTION_CONTEXT    = 3;    // Special "connection" context, a.k.a connection meta data. Supports keys `vehicle:info:vin` and `vehicle:info:voltage`
 }
 
 /*
