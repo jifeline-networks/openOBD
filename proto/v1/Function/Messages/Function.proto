@@ -23,6 +23,8 @@ message FunctionDetails {
   string version                              = 2; // Version
   string name                                 = 3; // Function name
   optional string description                 = 4; // Optional function description
+  repeated Product products                   = 5; // Optional supported products, if omitted everything is supported
+  repeated Vehicle vehicles                   = 6; // Optional supported vehicles, if omitted everything is supported
 }
 
 /*
@@ -41,6 +43,14 @@ enum ContextType {
   GLOBAL_CONTEXT        = 1;    // The "global" value refers to the openOBD session itself (from all contexts it is possible to refer to this "global" context
   FUNCTION_CONTEXT      = 2;    // The function context is used when setting function arguments and results
   CONNECTION_CONTEXT    = 3;    // Special "connection" context, a.k.a connection meta data. Supports keys `vehicle:info:vin` and `vehicle:info:voltage`
+}
+
+message Product {
+  string id = 1;  // Uuid, as listed by the Partner API
+}
+
+message Vehicle {
+  string id = 1;    // Numeric id, can be a Make, Model or Model group id as listed by the Partner API
 }
 
 /*
