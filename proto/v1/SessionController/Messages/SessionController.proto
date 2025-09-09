@@ -16,7 +16,7 @@ message ConnectorId {
 // Holds info on an openOBD session. Can be retrieved by using the [sessionController](grpc.md#sessioncontroller) service.
 message SessionInfo {
   string id = 1;  // A UUID representing this session.
-  string state = 2;  // The current [state](../design/protocol.md#session-states) of the session. Possible values: `available`, `active`, `interrupted`, `finished`, and `failed`.
+  string state = 2;  // The current [state](../design/session_states.md#) of the session. Possible values: `available`, `active`, `interrupted`, `finished`, and `failed`.
   string created_at = 3;  // The creation timestamp according to ISO 8601 (e.g. 2024-04-16:13:36.651+0000).
   string grpc_endpoint = 4;   // The endpoint to which gRPC messages need to be sent.
   string authentication_token = 5;  // The single-use token which is used to authenticate this openOBD session.

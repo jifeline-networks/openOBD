@@ -16,6 +16,7 @@ message Ecu {
     IsotpEcu isotp_ecu  = 1;
     KlineEcu kline_ecu  = 2;
     DoipEcu doip_ecu    = 3;
+    Tp20Ecu tp20_ecu    = 4;
   }
 }
 
@@ -37,4 +38,9 @@ message DoipEcu {
   uint32 gateway_id = 2;
   uint32 tester_id  = 3;
   uint32 ecu_id     = 4;
+}
+
+message Tp20Ecu {
+  CanBus can_bus          = 1;
+  uint32 logical_address  = 2;
 }

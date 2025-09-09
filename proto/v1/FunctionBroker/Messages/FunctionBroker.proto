@@ -41,6 +41,7 @@ message FunctionRegistration {
   FunctionDetails details                     = 1; // Function details
   FunctionRegistrationState state             = 2; // The current state of the function, whether it is on-line or not
   optional string signature                   = 3; // Proof of function ownership. Required when registering a function
+  optional FunctionVisibility visibility      = 4; // Determines if the function is visible in the operator dashboard
 }
 
 enum FunctionRegistrationState {
@@ -48,6 +49,12 @@ enum FunctionRegistrationState {
   FUNCTION_REGISTRATION_STATE_ONLINE         = 1;   // Function is on-line and may be called by the broker
   FUNCTION_REGISTRATION_STATE_OFFLINE        = 2;   // Function is off-line but known as a registered function
   FUNCTION_REGISTRATION_STATE_UNAVAILABLE    = 3;   // Function is not on-line and not registered as a function
+}
+
+enum FunctionVisibility {
+  FUNCTION_VISIBILITY_UNDEFINED   = 0;
+  FUNCTION_VISIBILITY_DASHBOARD   = 1;  // The function is available through both openOBD and the operator dashboard (default)
+  FUNCTION_VISIBILITY_INTERNAL    = 2;  // The function can be called and retrieved normally, but is not shown in the operator dashboard
 }
 
 message FunctionCall {
