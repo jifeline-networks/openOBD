@@ -10,7 +10,7 @@ import "v1/Messages/Empty.proto";
 service logging {
   /*
    The `openLogStream(stream LogMessage)` message allows sending log messages to the ScriptLog
-   interface in the dashboard. This could be used for information about progress or debugging
+   interface in the ticket workspace. This could be used for information about progress or debugging
    statements. More interactive communication with the operator can be done with the `userInterface` service.
    */
   rpc openLogStream(stream LogMessage) returns (EmptyMessage) {}
