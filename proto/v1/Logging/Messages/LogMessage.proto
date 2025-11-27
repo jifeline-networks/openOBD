@@ -1,0 +1,17 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.Logging.Messages";
+option java_multiple_files = true;
+
+message LogMessage {
+  string content = 1;
+  optional LogLevel level = 2;  // If not set, log level INFO is used
+}
+
+enum LogLevel {
+  LOG_LEVEL_UNDEFINED = 0;
+  LOG_LEVEL_DEBUG = 1;
+  LOG_LEVEL_INFO = 2;
+  LOG_LEVEL_WARNING = 3;
+  LOG_LEVEL_ERROR = 4;
+}

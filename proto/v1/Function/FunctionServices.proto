@@ -19,7 +19,7 @@ service function {
 
   !!! note
 
-    The `startFunctionContext()` call is not required, i.e. it is possible to run operations that are not in the context of a an (external) function
+      The `startFunctionContext()` call is not required, i.e. when an openOBD session is started this implicitly means that you have a function context. Only when calling remote functions (and handing over the session) a new function context is required.
 
   A successful call to this `startFunctionContext()` rpc will yield a monitor token (contained in FunctionContext message). This monitor token is exclusively used for calls to the `monitorFunctionContext()` service.
   This allows for monitoring the freshly created function context and informs the listener when the function context is being finished.
