@@ -67,7 +67,8 @@ service function {
 
   /*
   Set Function arguments for the newly created context
-  The header bearer token identifies which session context the argument should be placed into
+  The header bearer token identifies the session that created the new context (the parent context) and not
+  the newly created function context.
   This function can only be called as long as the target context did not authenticate() yet (is not in 'active' state)
   */
   rpc setFunctionArgument(Variable) returns (EmptyMessage) {}
