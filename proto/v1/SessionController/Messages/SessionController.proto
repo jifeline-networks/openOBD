@@ -3,9 +3,9 @@ package openOBD.v1;
 option java_package = "com.jifeline.OpenOBD.SessionController.Messages";
 option java_multiple_files = true;
 
-// Holds the ticket number or ticket identifier. This message is required to start an openOBD session.
+// Holds the ticket number. This message is required to start an openOBD session.
 message TicketId {
-  string value = 1; // Can be the ticket number (e.g. 7848095) or UUID (e.g. e67b35ae-cbff-4213-a935-73f79bdd15be).
+  string value = 1; // Ticket number (e.g. 7848095)
 }
 
 // Holds the connector number or connector identifier required to start an openOBD session.
