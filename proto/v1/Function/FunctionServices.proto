@@ -66,20 +66,20 @@ service function {
   rpc getFunctionDetails(EmptyMessage) returns (FunctionDetails) {}
 
   /*
-  Set Function arguments for the newly created context
+  Set Function arguments for the newly created context, ignoring the ContextType set in the Variable.
   The header bearer token identifies the session that created the new context (the parent context) and not
   the newly created function context.
-  This function can only be called as long as the target context did not authenticate() yet (is not in 'active' state)
+  This function can only be called as long as the target context did not authenticate() yet (is not in 'active' state).
   */
   rpc setFunctionArgument(Variable) returns (EmptyMessage) {}
 
   /*
-  Get Function arguments set for the current context
+  Get Function arguments set for the current context.
   */
   rpc getFunctionArgumentList(EmptyMessage) returns (VariableList) {}
 
   /*
-  Set Function results and store them in the current context
+  Set Function results and store them in the current context, ignoring the ContextType set in the Variable.
   */
   rpc setFunctionResult(Variable) returns (EmptyMessage) {}
 
