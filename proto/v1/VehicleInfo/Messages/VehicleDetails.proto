@@ -1,0 +1,11 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.VehicleInfo.Messages";
+option java_multiple_files = true;
+
+// Contains details identifying a specific vehicle.
+message VehicleDetails {
+  string name       = 1;  // Holds information such as the car's make and model.
+  uint32 tecdoc_id  = 2;  // The TecDoc ID matching this vehicle.
+  string vin        = 3;  // The VIN that was detected or manually entered.
+}

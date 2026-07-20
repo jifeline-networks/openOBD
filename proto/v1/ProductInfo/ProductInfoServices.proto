@@ -1,0 +1,17 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.ProductInfo";
+option java_multiple_files = true;
+
+import "v1/ProductInfo/Messages/ProductDetails.proto";
+import "v1/Messages/Empty.proto";
+
+/*
+This service is used to retrieve information about products.
+*/
+service productInfo {
+  /*
+  This call returns the products selected for this vehicle.
+   */
+  rpc getProductList(EmptyMessage) returns (ProductList) {}
+}

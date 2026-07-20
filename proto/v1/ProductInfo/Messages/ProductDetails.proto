@@ -1,0 +1,15 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.ProductInfo.Messages";
+option java_multiple_files = true;
+
+// A list containing all the selected products on a ticket.
+message ProductList {
+  repeated ProductDetails products = 1;   // All products selected on a ticket.
+}
+
+// A product describing the service that is being provided.
+message ProductDetails {
+  uint32 number = 1;  // The number that represents this product.
+  string name   = 2;  // The name that is displayed for this product.
+}

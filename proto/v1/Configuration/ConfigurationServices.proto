@@ -24,4 +24,14 @@ service config {
    */
   rpc getConfiguration(EmptyMessage) returns (Configuration) {}
 
+  /*
+  Mute all locals in the connection, preventing them from communicating with the vehicle.
+  This is automatically called at the start of an openOBD session to prevent interference during the session.
+   */
+  rpc muteLocals(EmptyMessage) returns (EmptyMessage) {}
+
+  /*
+  Unmute all locals in the connection to allow them to communicate with the vehicle.
+   */
+  rpc unmuteLocals(EmptyMessage) returns (EmptyMessage) {}
 }
