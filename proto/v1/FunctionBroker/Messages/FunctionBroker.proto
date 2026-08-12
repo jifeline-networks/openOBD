@@ -59,8 +59,9 @@ enum FunctionVisibility {
 
 message FunctionCall {
   string id                       = 1;  // Unique function id
-  optional string caller_id       = 2;  // Unique provider id representing the caller (filled out by the function broker)
+  optional string caller_id       = 2;  // Unique provider id representing the caller (filled in by the function broker)
   SessionInfo session_info        = 3;  // Session info of an openOBD session that is in the 'available' state (it is available for running a function)
+  optional string provider_id     = 4;  // Id of the provider that hosts this function. If empty, the function is assumed to be hosted by the calling provider
 }
 
 /**
