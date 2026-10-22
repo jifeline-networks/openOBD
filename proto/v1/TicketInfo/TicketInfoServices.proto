@@ -1,0 +1,17 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.TicketInfo";
+option java_multiple_files = true;
+
+import "v1/TicketInfo/Messages/TicketDetails.proto";
+import "v1/Messages/Empty.proto";
+
+/*
+This service is used to retrieve information about a ticket.
+*/
+service ticketInfo {
+  /*
+  This call returns identifying information for the current ticket.
+   */
+  rpc getTicketDetails(EmptyMessage) returns (TicketDetails) {}
+}

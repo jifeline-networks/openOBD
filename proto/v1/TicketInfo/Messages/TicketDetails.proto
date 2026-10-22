@@ -1,0 +1,10 @@
+syntax = "proto3";
+package openOBD.v1;
+option java_package = "com.jifeline.OpenOBD.TicketInfo.Messages";
+option java_multiple_files = true;
+
+// Contains details identifying a specific ticket.
+message TicketDetails {
+  uint32 number = 1;  // The human-readable number shown on the ticket.
+  string id     = 2;  // The UUID used to identify the ticket.
+}
